@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MG_Paketik_Extention.GUI;
 using MG_Paketik_Extention.Components;
 using New_religion.Scenes;
+using New_religion.World;
 
 namespace New_religion
 {
@@ -19,6 +20,7 @@ namespace New_religion
         }
         protected override void Initialize()
         {
+            var test = new HexWorld(6);
             GameCore.graphics = _graphics;
             GameCore.Initialize(); //!
             GameCore.content = Content;
