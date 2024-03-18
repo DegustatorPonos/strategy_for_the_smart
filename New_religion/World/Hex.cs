@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static MG_Paketik_Extention.Components.GameCore;
+using MG_Paketik_Extention.Visuals;
 
 namespace New_religion.World
 {
@@ -37,14 +38,23 @@ namespace New_religion.World
         public Hex[] Neighbours = new Hex[6];
 
         public Vector2 position;
+
+        public int ID;
+
+        Sprite mainSprite;
+
+        string texName = "Hex/Blank";
         #endregion
 
         /// <summary>
         /// HexWorld cell
         /// </summary>
-        public Hex(Vector2 pos)
+        public Hex(Vector2 pos, int id)
         {
             position = pos;
+            ID = id;
+
+            mainSprite = new Sprite(texName, Vector2.One, GetRealWorldPostioin(), new Tag[] { Tag.Render_Static });
         }
 
 
@@ -81,9 +91,7 @@ namespace New_religion.World
                 Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX, currY + 1, field);
                 Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
                 Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX, currY - 1, field);
-            }
-            
-                
+            }    
         }
 
         private Hex TryGenerateNeighbour(int tgX, int tgY, HexWorld field)
@@ -95,7 +103,8 @@ namespace New_religion.World
                 var trgY = (int)realPos.Y;
                 if (field.mesh[trgX, trgY] is null)
                 {
-                    field.mesh[trgX, trgY] = new Hex(new Vector2(tgX, tgY));
+                    field.mesh[trgX, trgY] = new Hex(new Vector2(tgX, tgY), field.AllHexes.Count());
+                    field.AllHexes.Add(field.mesh[trgX, trgY]);
                     field.mesh[trgX, trgY].GenerateNeighbours(field);
                 }
                 return field.mesh[trgX, trgY];
@@ -106,34 +115,27 @@ namespace New_religion.World
             }
         }
 
+        private Vector2 GetRealWorldPostioin()
+        {
+            return position * 50;
+        }
+
         public void Update()
-        {
-            throw new NotImplementedException();
-        }
+            => mainSprite.Update();
 
-        public GameCore.Tag[] GetRenderTags()
-        {
-            throw new NotImplementedException();
-        }
+        public Tag[] GetRenderTags()
+            => mainSprite.GetRenderTags();
 
-        public Microsoft.Xna.Framework.Vector2 GetUpToScalePosition(float scale)
-        {
-            throw new NotImplementedException();
-        }
+        public Vector2 GetUpToScalePosition(float scale)
+            => mainSprite.GetUpToScaleScale(scale);
 
-        public Microsoft.Xna.Framework.Vector2 GetUpToScaleScale(float scale)
-        {
-            throw new NotImplementedException();
-        }
+        public Vector2 GetUpToScaleScale(float scale)
+            => mainSprite.GetUpToScaleScale(scale);
 
         public void Draw(SpriteBatch batch)
-        {
-            throw new NotImplementedException();
-        }
+            => mainSprite.Draw(batch); 
 
-        public Microsoft.Xna.Framework.Rectangle? GetRenderBorders()
-        {
-            throw new NotImplementedException();
-        }
+        public Rectangle? GetRenderBorders()
+            => mainSprite.GetRenderBorders();
     }
 }
