@@ -13,16 +13,25 @@ namespace New_religion.World
     public class HexWorld
     {
         #region Variables
-        int Radius;
+        public int Radius;
 
+        /// <summary>
+        /// field of hexes = game world
+        /// </summary>
         public Hex[,] mesh;
 
+        /// <summary>
+        /// A list of all hexes numbered
+        /// </summary>
+        public List<Hex> AllHexes;
         #endregion
 
 
         public HexWorld(int radius)
         {
             Radius = radius;
+           
+            AllHexes = new List<Hex>(radius * radius);
             RegenerateWorld();
         }
         #region Functions
@@ -35,7 +44,8 @@ namespace New_religion.World
             var mesh_borders = (Radius * 2) + 1;
             mesh = new Hex[mesh_borders, mesh_borders];
             Vector2 center = GetPositionInArray(Vector2.Zero);
-            mesh[(int)center.X, (int)center.Y] = new Hex(Vector2.Zero);
+            mesh[(int)center.X, (int)center.Y] = new Hex(Vector2.Zero, 0);
+            AllHexes.Add(mesh[(int)center.X, (int)center.Y]);
             mesh[(int)center.X, (int)center.Y].GenerateNeighbours(this);
         }
 
@@ -49,6 +59,7 @@ namespace New_religion.World
             HexPosition.Y += Radius +1;
             return HexPosition;
         }
+        
 
         #endregion
     }

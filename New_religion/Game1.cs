@@ -20,7 +20,6 @@ namespace New_religion
         }
         protected override void Initialize()
         {
-            var test = new HexWorld(6);
             GameCore.graphics = _graphics;
             GameCore.Initialize(); //!
             GameCore.content = Content;
@@ -36,6 +35,18 @@ namespace New_religion
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+                GameCore.CurrentScene.GetCamera().Move(0, -1);
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                GameCore.CurrentScene.GetCamera().Move(-1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+                GameCore.CurrentScene.GetCamera().Move(0, 1);
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+                GameCore.CurrentScene.GetCamera().Move(1, 0);
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                GameCore.CurrentScene.GetCamera().Distance += 0.1f;
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+                GameCore.CurrentScene.GetCamera().Distance -= 0.1f;
             GameCore.Update(); //!
             base.Update(gameTime);
         }

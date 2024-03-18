@@ -3,6 +3,7 @@ using MG_Paketik_Extention.Components;
 using MG_Paketik_Extention.Visuals;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using New_religion.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace New_religion.Scenes
 {
     public class TestScene : Scene
     {
-        Sprite sprite;
-        public TestScene()
+        HexWorld world;
+        public TestScene() : base(3, Camera.RenderMode.SoftCameraRestricted)
         {
-            //base.AddObject(0,
-            //sprite = new Sprite("av", new Vector2() {X=0.1f, Y=0.1f}, Vector2.Zero, new GameCore.Tag[] { GameCore.Tag.Render_Static }));
-            //mainCamera.Distance = 10;
+            world = new HexWorld(6);
+            foreach (var hex in world.AllHexes)
+                AddObject(0, hex);
         }
    }
 }
