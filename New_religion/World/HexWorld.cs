@@ -13,6 +13,10 @@ namespace New_religion.World
     public class HexWorld
     {
         #region Variables
+
+        /// <summary>
+        /// D = 2*Radius + 1
+        /// </summary>
         public int Radius;
 
         /// <summary>
@@ -52,11 +56,10 @@ namespace New_religion.World
         /// <summary>
         /// Изначально координаты идут из левого верхнего. Эта функция вернёт их в центр.
         /// </summary>
-
         public Vector2 GetPositionInArray(Vector2 HexPosition)
         {
-            HexPosition.X += Radius +1;
-            HexPosition.Y += Radius +1;
+            HexPosition.X += Radius;
+            HexPosition.Y += Radius;
             return HexPosition;
         }
         

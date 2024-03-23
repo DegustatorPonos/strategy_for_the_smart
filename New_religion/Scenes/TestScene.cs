@@ -17,7 +17,9 @@ namespace New_religion.Scenes
         HexWorld world;
         public TestScene() : base(3, Camera.RenderMode.SoftCameraRestricted)
         {
-            world = new HexWorld(6);
+            mainCamera.Move(-543, -367);
+            mainCamera.Distance = 0.6f;
+            world = new HexWorld(12);
             foreach (var hex in world.AllHexes)
                 AddObject(0, hex);
         }

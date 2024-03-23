@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static MG_Paketik_Extention.Components.GameCore;
 using MG_Paketik_Extention.Visuals;
+using System.Reflection.Metadata.Ecma335;
 
 namespace New_religion.World
 {
@@ -35,15 +36,27 @@ namespace New_religion.World
             right = 5
         }
 
+
         public Hex[] Neighbours = new Hex[6];
 
+        private static Vector2 HexScale = new Vector2(46, 42);
+
+        /// <summary>
+        /// Position in a hex world
+        /// </summary>
         public Vector2 position;
 
+        /// <summary>
+        /// position to be drawn on a scene
+        /// </summary>
+        private Vector2 realScenePosition;
+         
         public int ID;
 
         Sprite mainSprite;
 
-        string texName = "Hex/Blank";
+        string texureName = "Hex/Blank";
+
         #endregion
 
         /// <summary>
@@ -51,23 +64,31 @@ namespace New_religion.World
         /// </summary>
         public Hex(Vector2 pos, int id)
         {
+            //Chech if the object can be created over here and not during the creation
             position = pos;
             ID = id;
+            
 
-            mainSprite = new Sprite(texName, Vector2.One, GetRealWorldPostioin(), new Tag[] { Tag.Render_Static });
+            //Setting up real-world position. Single-time action
+            realScenePosition = pos * HexScale;
+            if (Math.Abs(pos.Y % 2) == 1)
+            {
+                realScenePosition.X -= (24 * (position.X / Math.Abs(position.X))) + 1;
+                if (position.X > 0) realScenePosition.X += 2;
+            }
+
+            mainSprite = new Sprite(texureName, Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
         }
 
 
         /// <summary>
         /// Рекурсивно заполняет поле. Правила - см. файл CellGenRules и/или dev stream #1
         /// </summary>
-        /// <param name="field"></param>
         public void GenerateNeighbours(HexWorld field)
         {
-            //var realPos = field.GetPositionInArray(position);
             int currX = (int)position.X;
             int currY = (int)position.Y;
-            if ((int)position.Y % 2 == 0) //Potentially make the game faster
+            if ((int)position.Y % 2 == 0)
             {
                 Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX + 1, currY, field);
                 Neighbours[(int)Neighbour.left] = TryGenerateNeighbour(currX - 1, currY, field);
@@ -85,6 +106,7 @@ namespace New_religion.World
                 Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
                 Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - 1, field);
             }
+
             else
             {
                 Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
@@ -94,6 +116,9 @@ namespace New_religion.World
             }    
         }
 
+        /// <summary>
+        /// Part of recursive world-generation function
+        /// </summary>
         private Hex TryGenerateNeighbour(int tgX, int tgY, HexWorld field)
         {
             try
@@ -103,6 +128,12 @@ namespace New_religion.World
                 var trgY = (int)realPos.Y;
                 if (field.mesh[trgX, trgY] is null)
                 {
+                    if (Math.Abs(tgY % 2) == 1&& tgX == 0 || //those d not exist (explained in the 1st stream)
+                        Math.Abs(tgX) > field.Radius - Math.Abs(tgY / 2)) //forming a hex-like field out of smaller hexes
+                    {
+                        return null;
+                    }
+
                     field.mesh[trgX, trgY] = new Hex(new Vector2(tgX, tgY), field.AllHexes.Count());
                     field.AllHexes.Add(field.mesh[trgX, trgY]);
                     field.mesh[trgX, trgY].GenerateNeighbours(field);
@@ -111,13 +142,8 @@ namespace New_religion.World
             }
             catch
             {
-                return default;
+                return null;
             }
-        }
-
-        private Vector2 GetRealWorldPostioin()
-        {
-            return position * 50;
         }
 
         public void Update()
