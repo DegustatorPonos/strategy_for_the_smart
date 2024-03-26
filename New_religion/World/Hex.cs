@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static MG_Paketik_Extention.Components.GameCore;
 using MG_Paketik_Extention.Visuals;
 using System.Reflection.Metadata.Ecma335;
+using MG_Paketik_Extention.GUI;
 
 namespace New_religion.World
 {
@@ -53,7 +54,7 @@ namespace New_religion.World
          
         public int ID;
 
-        Sprite mainSprite;
+        Button mainSprite;
 
         string texureName = "Hex/Blank";
 
@@ -77,9 +78,14 @@ namespace New_religion.World
                 if (position.X > 0) realScenePosition.X += 2;
             }
 
-            mainSprite = new Sprite(texureName, Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
+            //mainSprite = new Sprite(texureName, Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
+            mainSprite = new Button(realScenePosition, texureName, OnClick, Color.LightGray, new Tag[] { Tag.Render_Static });
         }
 
+        private void OnClick()
+        {
+
+        }
 
         /// <summary>
         /// Рекурсивно заполняет поле. Правила - см. файл CellGenRules и/или dev stream #1
