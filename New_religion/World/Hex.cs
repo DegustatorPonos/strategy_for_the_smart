@@ -79,7 +79,7 @@ namespace New_religion.World
             }
 
             //mainSprite = new Sprite(texureName, Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
-            mainSprite = new Button(realScenePosition, texureName, OnClick, Color.LightGray, new Tag[] { Tag.Render_Static });
+            mainSprite = new Button(realScenePosition, texureName, OnClick, Color.Red, new Tag[] { Tag.Render_Static });
         }
 
         private void OnClick()
