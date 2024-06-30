@@ -5,6 +5,9 @@ using MG_Paketik_Extention.GUI;
 using MG_Paketik_Extention.Components;
 using New_religion.Scenes;
 using New_religion.World;
+using MG_Paketik_Extention.IO;
+using MG_Paketik_Extention.DebugTools;
+using System;
 
 namespace New_religion
 {
@@ -16,44 +19,44 @@ namespace New_religion
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            //IsMouseVisible = true; 
         }
         protected override void Initialize()
         {
             GameCore.graphics = _graphics;
-            GameCore.Initialize(); //!
+            GameCore.Initialize(); 
             GameCore.content = Content;
             base.Initialize();
+
+            IsMouseVisible = true;
+
+            KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(0, -5), Keys.W, KeybordController.InputEventType.OnHold);
+            KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(-5, 0), Keys.A, KeybordController.InputEventType.OnHold);
+            KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(0, 5), Keys.S, KeybordController.InputEventType.OnHold);
+            KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(5, 0), Keys.D, KeybordController.InputEventType.OnHold);
+            
+            //KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Distance += 0.033f, Keys.Q, KeybordController.InputEventType.OnHold);
+            //KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Distance -= 0.033f, Keys.E, KeybordController.InputEventType.OnHold);
+
+            KeybordController.AddAction(() => GC.Collect(), Keys.C, KeybordController.InputEventType.OnPress);
         }
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameCore.LoadContent(Content); //!
-            GameCore.Scenes.Add(new TestScene()); //Add your new object enherining "Scene" object here. TestScreen is the example here
+            GameCore.LoadContent(Content); 
+            GameCore.Scenes.Add(new TestScene());
         }
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-                GameCore.CurrentScene.GetCamera().Move(0, -1);
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-                GameCore.CurrentScene.GetCamera().Move(-1, 0);
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-                GameCore.CurrentScene.GetCamera().Move(0, 1);
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-                GameCore.CurrentScene.GetCamera().Move(1, 0);
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                GameCore.CurrentScene.GetCamera().Distance += 0.1f;
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
-                GameCore.CurrentScene.GetCamera().Distance -= 0.1f;
-            GameCore.Update(); //!
+            GameCore.Update(); 
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            GameCore.Draw(_spriteBatch); //!
+            GameCore.Draw(_spriteBatch); 
             base.Draw(gameTime);
         }
     }

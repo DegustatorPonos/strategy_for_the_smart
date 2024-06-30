@@ -40,7 +40,11 @@ namespace New_religion.World
 
         public Hex[] Neighbours = new Hex[6];
 
-        private static Vector2 HexScale = new Vector2(46, 42);
+        private static Vector2 HexScale = new Vector2(71, 46);
+
+        private static int horizontalOffset = 10;
+
+        private static int verticalOffset = 23;
 
         /// <summary>
         /// Position in a hex world
@@ -54,7 +58,7 @@ namespace New_religion.World
          
         public int ID;
 
-        Button mainSprite;
+        public Button mainSprite;
 
         string texureName = "Hex/Blank";
 
@@ -72,13 +76,12 @@ namespace New_religion.World
 
             //Setting up real-world position. Single-time action
             realScenePosition = pos * HexScale;
-            if (Math.Abs(pos.Y % 2) == 1)
+            if (Math.Abs(pos.X % 2) == 1)
             {
-                realScenePosition.X -= (24 * (position.X / Math.Abs(position.X))) + 1;
-                if (position.X > 0) realScenePosition.X += 2;
+                realScenePosition.Y -= (verticalOffset * (position.Y / Math.Abs(position.Y)));
             }
+            realScenePosition.X -= ((horizontalOffset + 1) * Math.Abs(position.X)) * (position.X != 0 ? (position.X / Math.Abs(position.X)) : 0);
 
-            //mainSprite = new Sprite(texureName, Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
             mainSprite = new Button(realScenePosition, texureName, OnClick, Color.Red, new Tag[] { Tag.Render_Static });
         }
 
@@ -94,32 +97,17 @@ namespace New_religion.World
         {
             int currX = (int)position.X;
             int currY = (int)position.Y;
-            if ((int)position.Y % 2 == 0)
-            {
-                Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX + 1, currY, field);
-                Neighbours[(int)Neighbour.left] = TryGenerateNeighbour(currX - 1, currY, field);
-            }
-            else
-            {
-                Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX + currX + 1 == 0? 2 : 1, currY, field);
-                Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX - currX - 1 == 0 ? 2 : 1, currY, field);
-            }
 
-            if (currX == 0)
-            {
-                Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
-                Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + 1, field);
-                Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
-                Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - 1, field);
-            }
+            //if(currX % 2 == 0)
+            //{
+            Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX, currY + 1, field);
+            Neighbours[(int)Neighbour.left] = TryGenerateNeighbour(currX, currY -1, field);
 
-            else
-            {
-                Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
-                Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX, currY + 1, field);
-                Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
-                Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX, currY - 1, field);
-            }    
+
+            Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
+            Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + 1, field);
+            Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
+            Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - 1, field);
         }
 
         /// <summary>
@@ -134,8 +122,8 @@ namespace New_religion.World
                 var trgY = (int)realPos.Y;
                 if (field.mesh[trgX, trgY] is null)
                 {
-                    if (Math.Abs(tgY % 2) == 1&& tgX == 0 || //those d not exist (explained in the 1st stream)
-                        Math.Abs(tgX) > field.Radius - Math.Abs(tgY / 2)) //forming a hex-like field out of smaller hexes
+                    if (Math.Abs(tgX % 2) == 1 && tgY == 0 || //those do not exist (explained in the 1st stream)
+                        Math.Abs(tgY) > field.Radius - Math.Abs(tgX / 2)) //forming a hex-like field out of smaller hexes
                     {
                         return null;
                     }
