@@ -1,12 +1,5 @@
-﻿using MG_Paketik_Extention;
-using MG_Paketik_Extention.Components;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace New_religion.World
 {

@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MG_Paketik_Extention.GUI;
 using MG_Paketik_Extention.Components;
 using New_religion.Scenes;
-using New_religion.World;
 using MG_Paketik_Extention.IO;
-using MG_Paketik_Extention.DebugTools;
 using System;
 
 namespace New_religion
@@ -44,7 +41,7 @@ namespace New_religion
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameCore.LoadContent(Content); 
-            GameCore.Scenes.Add(new TestScene());
+            GameCore.Scenes.Add(new GameScene());
         }
         protected override void Update(GameTime gameTime)
         {

@@ -1,15 +1,9 @@
 ﻿using MG_Paketik_Extention;
-using MG_Paketik_Extention.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static MG_Paketik_Extention.Components.GameCore;
-using MG_Paketik_Extention.Visuals;
-using System.Reflection.Metadata.Ecma335;
 using MG_Paketik_Extention.GUI;
 
 namespace New_religion.World
@@ -58,7 +52,7 @@ namespace New_religion.World
          
         public int ID;
 
-        public Button mainSprite;
+        public Button mainSprite { get; private set; }
 
         string texureName = "Hex/Blank";
 
@@ -71,8 +65,7 @@ namespace New_religion.World
         {
             //Chech if the object can be created over here and not during the creation
             position = pos;
-            ID = id;
-            
+            ID = id;            
 
             //Setting up real-world position. Single-time action
             realScenePosition = pos * HexScale;
@@ -82,12 +75,19 @@ namespace New_religion.World
             }
             realScenePosition.X -= ((horizontalOffset + 1) * Math.Abs(position.X)) * (position.X != 0 ? (position.X / Math.Abs(position.X)) : 0);
 
-            mainSprite = new Button(realScenePosition, texureName, OnClick, Color.Red, new Tag[] { Tag.Render_Static });
+            mainSprite = new Button(realScenePosition, texureName, Color.Red, new Tag[] { Tag.Render_Static });
+            mainSprite.ValidateCover += ValidateAction;
+            mainSprite.OnCover += OnClick;
         }
 
-        private void OnClick()
+        private void OnClick(Button sender)
         {
 
+        }
+
+        private bool ValidateAction(Button sender)
+        {
+            return true;
         }
 
         /// <summary>
@@ -98,11 +98,8 @@ namespace New_religion.World
             int currX = (int)position.X;
             int currY = (int)position.Y;
 
-            //if(currX % 2 == 0)
-            //{
             Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX, currY + 1, field);
             Neighbours[(int)Neighbour.left] = TryGenerateNeighbour(currX, currY -1, field);
-
 
             Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
             Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + 1, field);
