@@ -5,10 +5,12 @@ using System;
 using System.Linq;
 using static MG_Paketik_Extention.Components.GameCore;
 using MG_Paketik_Extention.GUI;
+using System.Collections.Generic;
+using static New_religion.World.Biomes;
 
 namespace New_religion.World
 {
-    public class Hex : IGameObject
+    public class Hex : IGameObject, IGridElement<Hex>
     {
         #region Variables (+ ASCII vagina)
 
@@ -32,13 +34,16 @@ namespace New_religion.World
         }
 
 
-        public Hex[] Neighbours = new Hex[6];
+        private Hex[] Neighbours = new Hex[6];
 
+        /// <summary>
+        /// Const
+        /// </summary>
         private static Vector2 HexScale = new Vector2(71, 46);
 
-        private static int horizontalOffset = 10;
+        private const int horizontalOffset = 10;
 
-        private static int verticalOffset = 23;
+        private const int verticalOffset = 23;
 
         /// <summary>
         /// Position in a hex world
@@ -53,6 +58,8 @@ namespace New_religion.World
         public int ID;
 
         public Button mainSprite { get; private set; }
+
+        public Biome Biome { get; set; }
 
         string texureName = "Hex/Blank";
 
@@ -154,5 +161,22 @@ namespace New_religion.World
 
         public Rectangle? GetRenderBorders()
             => mainSprite.GetRenderBorders();
+
+        #region IGridElement impl
+
+        // Talk about it
+
+        //AFAIK we can go nearly everywhere we want if it's not null
+        public bool ValidationFunction(Hex neighbourToApprove)
+            => true;
+
+        //right now it's just GetAll but worse
+        public IEnumerable<Hex> GetAccessibleNeighbours()
+            => Neighbours.Where(x => ValidationFunction(x));
+
+        public IEnumerable<Hex> GetAllNeighbours()
+            => Neighbours;
+
+        #endregion
     }
 }
