@@ -7,6 +7,7 @@ using static MG_Paketik_Extention.Components.GameCore;
 using MG_Paketik_Extention.GUI;
 using System.Collections.Generic;
 using static New_religion.World.Biomes;
+using MG_Paketik_Extention.DebugTools;
 
 namespace New_religion.World
 {
@@ -84,12 +85,12 @@ namespace New_religion.World
 
             mainSprite = new Button(realScenePosition, texureName, Color.Red, new Tag[] { Tag.Render_Static });
             mainSprite.ValidateCover += ValidateAction;
-            mainSprite.OnCover += OnClick;
+            mainSprite.OnAction += OnClick;
         }
 
         private void OnClick(Button sender)
         {
-
+            ConsoleLogger.SendInfo($"Pressed button at {position}");
         }
 
         private bool ValidateAction(Button sender)
@@ -161,6 +162,15 @@ namespace New_religion.World
 
         public Rectangle? GetRenderBorders()
             => mainSprite.GetRenderBorders();
+        
+        /// <summary>
+        /// Changes this hex's biome. Use this instead of variable change
+        /// </summary>
+        public void ChangeBiome(Biome biome)
+        {
+            this.Biome = biome;
+            this.mainSprite.ChangeColor(Biomes.BiomeColors[biome]);
+        }
 
         #region IGridElement impl
 

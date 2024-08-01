@@ -42,8 +42,16 @@ namespace New_religion.World
             mesh = new Hex[mesh_borders, mesh_borders];
             Vector2 center = GetPositionInArray(Vector2.Zero);
             mesh[(int)center.X, (int)center.Y] = new Hex(Vector2.Zero, 0);
+            mesh[(int)center.X, (int)center.Y].ChangeBiome(Biomes.Biome.Forest);
             AllHexes.Add(mesh[(int)center.X, (int)center.Y]);
             mesh[(int)center.X, (int)center.Y].GenerateNeighbours(this);
+
+
+            //Temp
+            foreach(var n in mesh[(int)center.X, (int)center.Y].GetAllNeighbours())
+            {
+                n.ChangeBiome(Biomes.Biome.Lake);
+            }
         }
 
         /// <summary>

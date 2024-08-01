@@ -16,25 +16,42 @@ namespace New_religion.World
         /// <summary>
         /// Biome the title can be. Converts to its heat where positive is warmer and negative is colder
         /// </summary>
-        public enum Biome : int
+        public enum Biome
         {
-            Winter  = -1,
-            Plane   = 0,
-            Forest  = 1,
-            Lake    = 1,
-            Desert   = 2,
+            Winter,
+            Plane,
+            Forest,
+            Lake,
+            Desert
+
         }
+
+        
+        // Dictionaries really don't like when you assign enums with 
+        // values that do repeat themselves. Classic C# thing - it makes sence but WHY 
 
         /// <summary>
         /// Might or might not be temporary and for debug purpoces
         /// </summary>
-        public static Dictionary<Biome, Color> BiomeColors = new Dictionary<Biome, Color>()
+        public static Dictionary<Biome, Color> BiomeColors = new()
         {
             {Biome.Winter, Color.White},
             {Biome.Plane, Color.Lime},
             {Biome.Forest, Color.Green},
             {Biome.Lake, Color.Blue},
             {Biome.Desert, Color.Yellow},
+        };
+
+        /// <summary>
+        /// Might or might not be temporary and for debug purpoces. Returns the heat of the given biome
+        /// </summary>
+        public static Dictionary<Biome, int> BiomeHeatmap = new()
+        {
+            {Biome.Winter, -1},
+            {Biome.Plane, 1},
+            {Biome.Forest, 1},
+            {Biome.Lake, 0},
+            {Biome.Desert, 2},
         };
 
         /// <summary>
@@ -64,7 +81,7 @@ namespace New_religion.World
         /// <summary>
         /// Function to determine the relative heat of two biomes
         /// </summary>
-        private static Func<Biome, Biome, int> GetRelativeHeat = (a, b) => (int)a - (int)b;
+        private static Func<Biome, Biome, int> GetRelativeHeat = (a, b) => BiomeHeatmap[a] - BiomeHeatmap[b];
 
         /// <summary>
         /// Determines the next biome to generate 

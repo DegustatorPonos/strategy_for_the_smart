@@ -31,9 +31,11 @@ namespace New_religion
             KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(-5, 0), Keys.A, KeybordController.InputEventType.OnHold);
             KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(0, 5), Keys.S, KeybordController.InputEventType.OnHold);
             KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Move(5, 0), Keys.D, KeybordController.InputEventType.OnHold);
-            
+
             //KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Distance += 0.033f, Keys.Q, KeybordController.InputEventType.OnHold);
             //KeybordController.AddAction(() => GameCore.CurrentScene.GetCamera().Distance -= 0.033f, Keys.E, KeybordController.InputEventType.OnHold);
+
+            //MouseController.OmLMBDown += (MouseState) => ConsoleLogger.SendInfo("Mouse pressed"); 
 
             KeybordController.AddAction(() => GC.Collect(), Keys.C, KeybordController.InputEventType.OnPress);
         }
@@ -47,7 +49,7 @@ namespace New_religion
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            GameCore.Update(); 
+            GameCore.Update();
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
