@@ -8,6 +8,7 @@ using MG_Paketik_Extention.GUI;
 using System.Collections.Generic;
 using static New_religion.World.Biomes;
 using MG_Paketik_Extention.DebugTools;
+using MG_Paketik_Extention.IO;
 
 namespace New_religion.World
 {
@@ -86,11 +87,19 @@ namespace New_religion.World
             mainSprite = new Button(realScenePosition, texureName, Color.Red, new Tag[] { Tag.Render_Static });
             mainSprite.ValidateCover += ValidateAction;
             mainSprite.OnAction += OnClick;
+
+            KeybordController.AddAction(() => {}, Microsoft.Xna.Framework.Input.Keys.B);
         }
 
         private void OnClick(Button sender)
         {
             ConsoleLogger.SendInfo($"Pressed button at {position}");
+            ChangeBiome(Biomes.Biome.Forest);
+            foreach (var n in GetAllNeighbours())
+            {
+                if (n is null) continue;
+                n.ChangeBiome(Biomes.Biome.Lake);
+            }
         }
 
         private bool ValidateAction(Button sender)
@@ -166,9 +175,9 @@ namespace New_religion.World
         /// <summary>
         /// Changes this hex's biome. Use this instead of variable change
         /// </summary>
-        public void ChangeBiome(Biome biome)
+        public void ChangeBiome(Biome? biome)
         {
-            this.Biome = biome;
+            this.Biome = biome ?? null;
             this.mainSprite.ChangeColor(Biomes.BiomeColors[biome]);
         }
 

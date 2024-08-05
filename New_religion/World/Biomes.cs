@@ -18,6 +18,7 @@ namespace New_religion.World
         /// </summary>
         public enum Biome
         {
+            None,
             Winter,
             Plane,
             Forest,
@@ -35,6 +36,7 @@ namespace New_religion.World
         /// </summary>
         public static Dictionary<Biome, Color> BiomeColors = new()
         {
+            {Biome.None, Color.White},
             {Biome.Winter, Color.White},
             {Biome.Plane, Color.Lime},
             {Biome.Forest, Color.Green},
@@ -52,6 +54,7 @@ namespace New_religion.World
             {Biome.Forest, 1},
             {Biome.Lake, 0},
             {Biome.Desert, 2},
+            {Biome.None, int.MaxValue},
         };
 
         /// <summary>
