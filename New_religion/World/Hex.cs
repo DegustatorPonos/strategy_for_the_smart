@@ -35,11 +35,10 @@ namespace New_religion.World
             right = 5
         }
 
-
         private Hex[] Neighbours = new Hex[6];
 
         /// <summary>
-        /// Const
+        /// Constant
         /// </summary>
         private static Vector2 HexScale = new Vector2(71, 46);
 
@@ -88,17 +87,19 @@ namespace New_religion.World
             mainSprite.ValidateCover += ValidateAction;
             mainSprite.OnAction += OnClick;
 
+            KeybordController.AddAction(() => { this.ChangeBiome(null); }, Microsoft.Xna.Framework.Input.Keys.C);
+
             KeybordController.AddAction(() => {}, Microsoft.Xna.Framework.Input.Keys.B);
         }
 
         private void OnClick(Button sender)
         {
             ConsoleLogger.SendInfo($"Pressed button at {position}");
-            ChangeBiome(Biomes.Biome.Forest);
+            ChangeBiome(Biome.Forest);
             foreach (var n in GetAllNeighbours())
             {
                 if (n is null) continue;
-                n.ChangeBiome(Biomes.Biome.Lake);
+                n.ChangeBiome(Biome.Lake);
             }
         }
 
@@ -115,15 +116,39 @@ namespace New_religion.World
             int currX = (int)position.X;
             int currY = (int)position.Y;
 
-            Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX, currY + 1, field);
-            Neighbours[(int)Neighbour.left] = TryGenerateNeighbour(currX, currY -1, field);
+            // If the cell is on the border of the '-1' to '1' transition then there is a need to make an adjustment for this. 
+            // That's just the side-effect of the given coordinations trnsformation
+            Neighbours[(int)Neighbour.right] = TryGenerateNeighbour(currX, currY + ((Math.Abs(currX % 2) == 1 && currY == -1) ? 2 : 1), field);
+            Neighbours[(int)Neighbour.left] =  TryGenerateNeighbour(currX, currY - ((Math.Abs(currX % 2) == 1 && currY == 1) ? 2 : 1), field);
 
-            Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
-            Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + 1, field);
-            Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
-            Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - 1, field);
+            // TODO There is probably a better way of handling the corner cases
+            // but as long as it does well for a single-time operation I'm cool with this
+            if(currY == 0)
+            {
+                //This setup works fine in these cases so we remove them out of the way before all
+                Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + 1, field);
+                Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + 1, field);
+                Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - 1, field);
+                Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - 1, field);
+                return;
+            }
+            if (currX % 2 == 0)
+            {
+                Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + (currY  > 0? 1 : 0), field);
+                Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + (currY > 0 ? 1 : 0), field);
+                Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - (currY < 0 ? 1 : 0), field);
+                Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - (currY < 0 ? 1 : 0), field);
+            }
+            else
+            {
+                //If X is odd then everything is reversed
+                Neighbours[(int)Neighbour.upper_right] = TryGenerateNeighbour(currX + 1, currY + (currY < 0 ? 1 : 0), field);
+                Neighbours[(int)Neighbour.upper_left] = TryGenerateNeighbour(currX - 1, currY + (currY < 0 ? 1 : 0), field);
+                Neighbours[(int)Neighbour.lower_right] = TryGenerateNeighbour(currX + 1, currY - (currY > 0 ? 1 : 0), field);
+                Neighbours[(int)Neighbour.lower_left] = TryGenerateNeighbour(currX - 1, currY - (currY > 0 ? 1 : 0), field);
+            }
         }
-
+        
         /// <summary>
         /// Part of recursive world-generation function
         /// </summary>
@@ -131,13 +156,16 @@ namespace New_religion.World
         {
             try
             {
-                var realPos = field.GetPositionInArray(new Vector2(tgX, tgY));
-                var trgX = (int)realPos.X;
-                var trgY = (int)realPos.Y;
+                // Get a position of a hex in the array
+                var ArrayPos = field.GetPositionInArray(new Vector2(tgX, tgY));
+                var trgX = (int)ArrayPos.X;
+                var trgY = (int)ArrayPos.Y;
+
+                //If it does not exist - we make it
                 if (field.mesh[trgX, trgY] is null)
                 {
-                    if (Math.Abs(tgX % 2) == 1 && tgY == 0 || //those do not exist (explained in the 1st stream)
-                        Math.Abs(tgY) > field.Radius - Math.Abs(tgX / 2)) //forming a hex-like field out of smaller hexes
+                    if (Math.Abs(tgX % 2) == 1 && tgY == 0 ||             // <- Those do not exist (explained in the 1st stream)
+                        Math.Abs(tgY) > field.Radius - Math.Abs(tgX / 2)) // <- Forming a hex-like field out of smaller hexes
                     {
                         return null;
                     }
@@ -177,8 +205,8 @@ namespace New_religion.World
         /// </summary>
         public void ChangeBiome(Biome? biome)
         {
-            this.Biome = biome ?? null;
-            this.mainSprite.ChangeColor(Biomes.BiomeColors[biome]);
+            Biome = (Biome)(biome ?? Biome.None);
+            mainSprite.ChangeColor(Biomes.BiomeColors[Biome]);
         }
 
         #region IGridElement impl

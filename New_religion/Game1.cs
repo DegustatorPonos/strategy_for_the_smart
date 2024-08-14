@@ -5,6 +5,7 @@ using MG_Paketik_Extention.Components;
 using New_religion.Scenes;
 using MG_Paketik_Extention.IO;
 using System;
+using MG_Paketik_Extention.DebugTools;
 
 namespace New_religion
 {
@@ -21,7 +22,7 @@ namespace New_religion
         protected override void Initialize()
         {
             GameCore.graphics = _graphics;
-            GameCore.Initialize(); 
+            GameCore.Initialize();
             GameCore.content = Content;
             base.Initialize();
 
@@ -37,7 +38,9 @@ namespace New_religion
 
             //MouseController.OmLMBDown += (MouseState) => ConsoleLogger.SendInfo("Mouse pressed"); 
 
-            KeybordController.AddAction(() => GC.Collect(), Keys.C, KeybordController.InputEventType.OnPress);
+            //KeybordController.AddAction(() => GC.Collect(), Keys.C, KeybordController.InputEventType.OnPress); 
+
+            ConsoleLogger.SendInfo("<==============~NEW INSTANCE~==============>");
         }
         protected override void LoadContent()
         {
