@@ -1,5 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Assimp;
+using Microsoft.Xna.Framework;
+using New_religion.Interfaces;
+using New_religion.World.Biomes;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace New_religion.World
 {
@@ -21,13 +25,23 @@ namespace New_religion.World
         /// A list of all hexes numbered
         /// </summary>
         public List<Hex> AllHexes;
+
+        /// <summary>
+        /// The ruleset whe world follows while generating
+        /// </summary>
+        public IBiomeGenerator BiomeGeneratonSchema;    
         #endregion
 
-
-        public HexWorld(int radius)
+        public HexWorld(int radius, IBiomeGenerator biomeGenerator = null)
         {
             Radius = radius;
-           
+
+            if (biomeGenerator == null)
+            {
+                BiomeGeneratonSchema = new DumbGenerator();
+            }
+            else BiomeGeneratonSchema = biomeGenerator;
+            
             AllHexes = new List<Hex>(radius * radius);
             RegenerateWorld();
         }
@@ -44,6 +58,12 @@ namespace New_religion.World
             mesh[(int)center.X, (int)center.Y] = new Hex(Vector2.Zero, 0);
             AllHexes.Add(mesh[(int)center.X, (int)center.Y]);
             mesh[(int)center.X, (int)center.Y].GenerateNeighbours(this);
+            // We generate biomes after we ensure every hex is created and has the context of its neighbours
+            foreach(var hex in mesh)
+            {
+                if(hex is null) continue;
+                hex.GenerateBiome(BiomeGeneratonSchema);
+            }
         }
 
         /// <summary>

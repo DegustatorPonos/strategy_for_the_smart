@@ -9,7 +9,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace New_religion.World
+namespace New_religion.World.Biomes
 {
     public static class Biomes
     {
@@ -27,7 +27,6 @@ namespace New_religion.World
 
         }
 
-        
         // Dictionaries really don't like when you assign enums with 
         // values that do repeat themselves. Classic C# thing - it makes sence but WHY 
 
