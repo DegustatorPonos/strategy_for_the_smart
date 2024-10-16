@@ -7,8 +7,14 @@ namespace New_religion.Interfaces
     /// </summary>
     public interface IBiomeGenerator
     {
+        /// <summary>
+        /// Generate next biome without any context
+        /// </summary>
         Biomes.Biome GetNextBiome(Biomes.Biome currentBiome);
 
+        /// <summary>
+        /// Generate next biome with context
+        /// </summary>
         Biomes.Biome GetNextBiome(Biomes.Biome currentBiome, params Biomes.Biome[] contextBiomes);
     }
 }

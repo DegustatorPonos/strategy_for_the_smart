@@ -10,6 +10,7 @@ using static New_religion.World.Biomes.Biomes;
 using MG_Paketik_Extention.DebugTools;
 using MG_Paketik_Extention.IO;
 using New_religion.Interfaces;
+using MG_Paketik_Extention.Components;
 
 namespace New_religion.World
 {
@@ -45,9 +46,15 @@ namespace New_religion.World
         /// </summary>
         private static Vector2 HexScale = new Vector2(71, 46);
 
-        private const int horizontalOffset = 10;
+        /// <summary>
+        /// Size of the side tip of the hex
+        /// </summary>
+        private const int HORIZONTAL_OFFSET = 10;
 
-        private const int verticalOffset = 23;
+        /// <summary>
+        /// Distance between the top of the hex and the side tip
+        /// </summary>
+        private const int VERTICAL_OFFSET = 23;
 
         #endregion
 
@@ -57,7 +64,7 @@ namespace New_religion.World
         public Vector2 position;
 
         /// <summary>
-        /// position to be drawn on a scene
+        /// Position to be drawn on a scene
         /// </summary>
         private Vector2 realScenePosition;
         
@@ -87,9 +94,9 @@ namespace New_religion.World
             realScenePosition = pos * HexScale;
             if (Math.Abs(pos.X % 2) == 1)
             {
-                realScenePosition.Y -= (verticalOffset * (position.Y / Math.Abs(position.Y)));
+                realScenePosition.Y -= (VERTICAL_OFFSET * (position.Y / Math.Abs(position.Y)));
             }
-            realScenePosition.X -= ((horizontalOffset + 1) * Math.Abs(position.X)) * (position.X != 0 ? (position.X / Math.Abs(position.X)) : 0);
+            realScenePosition.X -= ((HORIZONTAL_OFFSET + 1) * Math.Abs(position.X)) * (position.X != 0 ? (position.X / Math.Abs(position.X)) : 0);
             
             mainSprite = new Button(realScenePosition, texureName, Color.Red, new Tag[] { Tag.Render_Static });
             mainSprite.ValidateCover += ValidateAction;
@@ -111,6 +118,20 @@ namespace New_religion.World
 
         private bool ValidateAction(Button sender)
         {
+            // Position of teh cursor on the button
+            var positionOnButton = MouseController.InWorldMousePosition - sender.Position;
+
+            // The difference between the closest tallest point of the hex and the closest edge
+            float coef = positionOnButton.Y / (HexScale.Y / 2);
+            if(coef > 1)
+                coef = 1 - (float)(coef - 1);
+            float acceptableDx = HORIZONTAL_OFFSET * (float)Math.Round(coef, 2);
+
+            // If the cursor is off the hex borders
+            if(positionOnButton.X < HORIZONTAL_OFFSET - acceptableDx 
+                || positionOnButton.X > HexScale.X - HORIZONTAL_OFFSET + acceptableDx)
+                return false;
+
             return true;
         }
 

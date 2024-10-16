@@ -32,6 +32,7 @@ namespace New_religion.Scenes
 
             ConsoleLogger.SendInfo($"Camera at {mainCamera.Position} - zoom {mainCamera.Distance} - mouse at {MouseController.InWorldMousePosition}");
             world = new HexWorld(12);
+
             
             foreach (var hex in world.AllHexes)
                 if(!(hex is null))
