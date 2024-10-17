@@ -118,14 +118,16 @@ namespace New_religion.World
 
         private bool ValidateAction(Button sender)
         {
-            // Position of teh cursor on the button
+            // Position of the cursor on the button
             var positionOnButton = MouseController.InWorldMousePosition - sender.Position;
 
-            // The difference between the closest tallest point of the hex and the closest edge
+            // The difference between the closest tallest perpendicular line of the hex and the closest edge
             float coef = positionOnButton.Y / (HexScale.Y / 2);
             if(coef > 1)
                 coef = 1 - (float)(coef - 1);
-            float acceptableDx = HORIZONTAL_OFFSET * (float)Math.Round(coef, 2);
+
+            // 0.5f prevents 1px overlap that occures due to hex structure
+            float acceptableDx = (HORIZONTAL_OFFSET * (float)Math.Round(coef, 2)) - 0.5f;
 
             // If the cursor is off the hex borders
             if(positionOnButton.X < HORIZONTAL_OFFSET - acceptableDx 
