@@ -10,7 +10,9 @@ using static New_religion.World.Biomes.Biomes;
 using MG_Paketik_Extention.DebugTools;
 using MG_Paketik_Extention.IO;
 using New_religion.Interfaces;
+using MG_Paketik_Extention.Visuals;
 using MG_Paketik_Extention.Components;
+using MG_Paketik_Extention.Components.Assets;
 
 namespace New_religion.World
 {
@@ -75,9 +77,22 @@ namespace New_religion.World
 
         public Button mainSprite { get; private set; }
 
+        /// <summary>
+        /// The sprite with overlay decals on it
+        /// </summary>
+        public Sprite overlaySprite { get; private set; }
+
+        /// <summary>
+        /// The difference between hex scale and overaly scale
+        /// </summary>
+        Vector2 overlaySpriteOffset = new(0, 0);
+
         public Biome Biome { get; private set; }
 
-        string texureName = "Hex/Blank";
+        /// <summary>
+        /// Default hex texture
+        /// </summary>
+        private string texureName = "Hex/Blank";
 
         #endregion
 
@@ -102,18 +117,22 @@ namespace New_religion.World
             mainSprite.ValidateCover += ValidateAction;
             mainSprite.OnAction += OnClick;
 
+            overlaySprite = new Sprite("av", Vector2.One, realScenePosition, new Tag[] { Tag.Render_Static });
+
             KeybordController.AddAction(() => { this.SetBiome(null); }, Microsoft.Xna.Framework.Input.Keys.C);
         }
 
         private void OnClick(Button sender)
         {
             ConsoleLogger.SendInfo($"Pressed button at {position}");
-            SetBiome(Biome.Forest);
-            foreach (var n in GetAllNeighbours())
-            {
-                if (n is null) continue;
-                n.SetBiome(Biome.Lake);
-            }
+
+            // <- For testing purpoces
+            //SetBiome(Biome.Forest);
+            //foreach (var n in GetAllNeighbours())
+            //{
+            //    if (n is null) continue;
+            //    n.SetBiome(Biome.Lake);
+            //}
         }
 
         private bool ValidateAction(Button sender)
@@ -221,7 +240,10 @@ namespace New_religion.World
         }
 
         public void Update()
-            => mainSprite.Update();
+        {
+            mainSprite.Update();
+            overlaySprite.Update();
+        }
 
         public Tag[] GetRenderTags()
             => mainSprite.GetRenderTags();
@@ -233,18 +255,47 @@ namespace New_religion.World
             => mainSprite.GetUpToScaleScale(scale);
 
         public void Draw(SpriteBatch batch)
-            => mainSprite.Draw(batch); 
+        {
+            mainSprite.Draw(batch);
+            overlaySprite.Draw(batch);
+        }
 
         public Rectangle? GetRenderBorders()
-            => mainSprite.GetRenderBorders();
+            => overlaySprite.GetRenderBorders(); // It is usually bigger than mainSprite
         
         /// <summary>
         /// Changes this hex's biome. Use this instead of variable change
         /// </summary>
         public void SetBiome(Biome? biome)
         {
-            Biome = (Biome)(biome ?? Biome.None);
+            Biome = (Biome)(biome ?? default);
+            //texureName = Biomes.Biomes.BiomesTextures[Biome]; 
+            mainSprite.TextureName = Biomes.Biomes.BiomesTextures[Biome];
+            if (Biomes.Biomes.BiomesOverlaysTextures.ContainsKey(Biome))
+            {
+                SetOveraly(Biomes.Biomes.BiomesOverlaysTextures[Biome]);
+            }
             mainSprite.ChangeColor(Biomes.Biomes.BiomeColors[Biome]);
+        }
+
+        /// <summary>
+        /// Sets the overlay texture and recalculates the offset
+        /// </summary>
+        private void SetOveraly(string overlayTextureName)
+        {
+            try
+            {
+                var texture = CommonTextureBank.GetTexture(overlayTextureName);
+                overlaySpriteOffset.X = (texture.Width - HexScale.X) / 2;
+                overlaySpriteOffset.Y = (texture.Height - HexScale.Y) / 2;
+                overlaySprite.Position = realScenePosition - overlaySpriteOffset;
+                overlaySprite.TextureName = overlayTextureName;
+            }
+            catch
+            {
+                ConsoleLogger.SendError($"Unable to locate texture \"{overlayTextureName}\".");
+            }
+                
         }
 
         #region IGridElement impl

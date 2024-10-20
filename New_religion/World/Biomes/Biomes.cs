@@ -1,13 +1,7 @@
-﻿using MG_Paketik_Extention;
-using MG_Paketik_Extention.Components;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace New_religion.World.Biomes
 {
@@ -18,13 +12,9 @@ namespace New_religion.World.Biomes
         /// </summary>
         public enum Biome
         {
-            None,
-            Winter,
-            Plane,
-            Forest,
-            Lake,
-            Desert
-
+            Field = 0,
+            Mountains = 1,
+            //None = 1000,
         }
 
         // Dictionaries really don't like when you assign enums with 
@@ -35,12 +25,28 @@ namespace New_religion.World.Biomes
         /// </summary>
         public static Dictionary<Biome, Color> BiomeColors = new()
         {
-            {Biome.None, Color.White},
-            {Biome.Winter, Color.White},
-            {Biome.Plane, Color.Lime},
-            {Biome.Forest, Color.Green},
-            {Biome.Lake, Color.Blue},
-            {Biome.Desert, Color.Yellow},
+            { Biome.Field, Color.White },
+            { Biome.Mountains, Color.White },
+            //{ Biome.None, Color.White },
+        };
+        
+        /// <summary>
+        /// Returns textures that represent any given biome
+        /// </summary>
+        public static Dictionary<Biome, string> BiomesTextures = new()
+        {
+            { Biome.Field, "Hex/Field" },
+            { Biome.Mountains, "Hex/Mountains" },
+            //{ Biome.None, "Hex/Blank" },
+        };
+
+        /// <summary>
+        /// Might or might not be temporary and for debug purpoces
+        /// </summary>
+        public static Dictionary<Biome, string> BiomesOverlaysTextures = new()
+        {
+            { Biome.Field, "Hex/Overlays/Field" },
+            { Biome.Mountains, "Hex/Overlays/Mountains" },
         };
 
         /// <summary>
@@ -48,12 +54,7 @@ namespace New_religion.World.Biomes
         /// </summary>
         public static Dictionary<Biome, int> BiomeHeatmap = new()
         {
-            {Biome.Winter, -1},
-            {Biome.Plane, 1},
-            {Biome.Forest, 1},
-            {Biome.Lake, 0},
-            {Biome.Desert, 2},
-            {Biome.None, int.MaxValue},
+            {Biome.Field, 0},
         };
 
         /// <summary>
