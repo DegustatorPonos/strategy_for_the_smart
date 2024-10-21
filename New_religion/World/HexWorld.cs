@@ -1,9 +1,10 @@
-﻿using Assimp;
+﻿using MG_Paketik_Extention.Visuals;
 using Microsoft.Xna.Framework;
 using New_religion.Interfaces;
 using New_religion.World.Biomes;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.AccessControl;
 
 namespace New_religion.World
 {
@@ -27,6 +28,11 @@ namespace New_religion.World
         public List<Hex> AllHexes;
 
         /// <summary>
+        /// An array that contains all hex overlays sorted by Y coordinat (lower first)
+        /// </summary>
+        public IEnumerable<Sprite> HexOverlays;
+
+        /// <summary>
         /// The ruleset whe world follows while generating
         /// </summary>
         public IBiomeGenerator BiomeGeneratonSchema;    
@@ -44,6 +50,20 @@ namespace New_religion.World
             
             AllHexes = new List<Hex>(radius * radius);
             RegenerateWorld();
+
+            // Select and sort overlays
+
+            //var allOveralys = AllHexes.Select(x => x.overlaySprite).ToArray();
+            //var overlayHeights = allOveralys.Select(x => x.Position.Y).Distinct().OrderBy(x => x).ToArray();
+            //List<Sprite> overalys = new(allOveralys.Length);
+            //foreach (var height in overlayHeights)
+            //{
+            //    foreach (var relatedHex in allOveralys.Where(x => x.Position.Y == height))
+            //        overalys.Add(relatedHex);
+            //}
+            //HexOverlays = overalys;
+
+            HexOverlays = OrderOverlays();
         }
         #region Functions
 
@@ -75,7 +95,25 @@ namespace New_religion.World
             HexPosition.Y += Radius;
             return HexPosition;
         }
-        
+
+        private IEnumerable<Sprite> OrderOverlays()
+        {
+            List<Sprite> list = new();
+
+            // All biomes sorted by priorities
+            var BiomePriorities = Biomes.Biomes.BiomeDict.Values.OrderBy(x => x.OverlayWeight).ToArray();
+
+            foreach (var biome in BiomePriorities)
+            {
+                foreach (var hex in AllHexes.Where(x => x.Biome == biome.Identifier).OrderBy(x => x.position.Y))
+                {
+                    list.Add(hex.overlaySprite);
+                }
+            }
+
+            return list;
+        }
+
         #endregion
     }
 }

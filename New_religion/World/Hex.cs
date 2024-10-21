@@ -242,7 +242,7 @@ namespace New_religion.World
         public void Update()
         {
             mainSprite.Update();
-            overlaySprite.Update();
+            //overlaySprite.Update(); 
         }
 
         public Tag[] GetRenderTags()
@@ -257,7 +257,7 @@ namespace New_religion.World
         public void Draw(SpriteBatch batch)
         {
             mainSprite.Draw(batch);
-            overlaySprite.Draw(batch);
+            //overlaySprite.Draw(batch); 
         }
 
         public Rectangle? GetRenderBorders()
@@ -269,13 +269,10 @@ namespace New_religion.World
         public void SetBiome(Biome? biome)
         {
             Biome = (Biome)(biome ?? default);
-            //texureName = Biomes.Biomes.BiomesTextures[Biome]; 
-            mainSprite.TextureName = Biomes.Biomes.BiomesTextures[Biome];
-            if (Biomes.Biomes.BiomesOverlaysTextures.ContainsKey(Biome))
-            {
-                SetOveraly(Biomes.Biomes.BiomesOverlaysTextures[Biome]);
-            }
-            mainSprite.ChangeColor(Biomes.Biomes.BiomeColors[Biome]);
+            var biomeEntity = Biomes.Biomes.BiomeDict[Biome];
+            mainSprite.TextureName = biomeEntity.TextureName;
+            SetOveraly(biomeEntity.OveralyTextureName);
+            mainSprite.ChangeColor(biomeEntity.Color);
         }
 
         /// <summary>
@@ -294,8 +291,7 @@ namespace New_religion.World
             catch
             {
                 ConsoleLogger.SendError($"Unable to locate texture \"{overlayTextureName}\".");
-            }
-                
+            }    
         }
 
         #region IGridElement impl

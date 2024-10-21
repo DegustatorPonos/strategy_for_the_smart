@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 
 namespace New_religion.World.Biomes
 {
@@ -14,39 +15,18 @@ namespace New_religion.World.Biomes
         {
             Field = 0,
             Mountains = 1,
+            Swamp = 2,
             //None = 1000,
         }
 
-        // Dictionaries really don't like when you assign enums with 
-        // values that do repeat themselves. Classic C# thing - it makes sence but WHY 
-
-        /// <summary>
-        /// Might or might not be temporary and for debug purpoces
-        /// </summary>
-        public static Dictionary<Biome, Color> BiomeColors = new()
+        public static Dictionary<Biome, World.Biomes.Biome> BiomeDict = new()
         {
-            { Biome.Field, Color.White },
-            { Biome.Mountains, Color.White },
-            //{ Biome.None, Color.White },
-        };
-        
-        /// <summary>
-        /// Returns textures that represent any given biome
-        /// </summary>
-        public static Dictionary<Biome, string> BiomesTextures = new()
-        {
-            { Biome.Field, "Hex/Field" },
-            { Biome.Mountains, "Hex/Mountains" },
-            //{ Biome.None, "Hex/Blank" },
-        };
-
-        /// <summary>
-        /// Might or might not be temporary and for debug purpoces
-        /// </summary>
-        public static Dictionary<Biome, string> BiomesOverlaysTextures = new()
-        {
-            { Biome.Field, "Hex/Overlays/Field" },
-            { Biome.Mountains, "Hex/Overlays/Mountains" },
+            { Biome.Field, new() 
+                { Identifier = Biome.Field, Color = Color.White, TextureName = "Hex/Field", OveralyTextureName = "Hex/Overlays/Field", OverlayWeight = 0 } },
+            { Biome.Mountains, new() 
+                { Identifier = Biome.Mountains, Color = Color.White, TextureName = "Hex/Mountains", OveralyTextureName = "Hex/Overlays/Mountains", OverlayWeight = 1 } },
+            { Biome.Swamp, new() 
+                { Identifier = Biome.Swamp, Color = Color.White, TextureName = "Hex/Swamp", OveralyTextureName = "Hex/Overlays/Swamp", OverlayWeight = 0 } },
         };
 
         /// <summary>

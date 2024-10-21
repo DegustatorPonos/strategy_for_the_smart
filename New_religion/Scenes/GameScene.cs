@@ -21,8 +21,9 @@ namespace New_religion.Scenes
         //  LAYERS:
         // 0 - Backgraund
         // 1 - Hexes
-        // 2 - Characters
-        // 3 - VFX
+        // 2 - Hex overlays
+        // 3 - Characters
+        // 4 - VFX
         public GameScene() : base(4, Camera.RenderMode.SoftCameraRestricted)
         {
             MouseController.SetMousePosition(0, 0);
@@ -30,10 +31,19 @@ namespace New_religion.Scenes
             _world = new HexWorld(6);
 
             foreach (var hex in _world.AllHexes)
+            {
                 if (!(hex is null))
+                {
                     AddObject(1, hex);
+                }
+            }
+
+            foreach (var overaly in _world.HexOverlays)
+            {
+                if (overaly is null)
+                    continue;
+                AddObject(2, overaly);
+            }
         }
-
-
     }
 }
