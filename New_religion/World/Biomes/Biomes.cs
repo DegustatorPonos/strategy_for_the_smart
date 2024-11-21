@@ -16,6 +16,7 @@ namespace New_religion.World.Biomes
             Field = 0,
             Mountains = 1,
             Swamp = 2,
+            Forest = 3,
             //None = 1000,
         }
 
@@ -24,9 +25,11 @@ namespace New_religion.World.Biomes
             { Biome.Field, new() 
                 { Identifier = Biome.Field, Color = Color.White, TextureName = "Hex/Field", OveralyTextureName = "Hex/Overlays/Field", OverlayWeight = 0 } },
             { Biome.Mountains, new() 
-                { Identifier = Biome.Mountains, Color = Color.White, TextureName = "Hex/Mountains", OveralyTextureName = "Hex/Overlays/Mountains", OverlayWeight = 1 } },
+                { Identifier = Biome.Mountains, Color = Color.White, TextureName = "Hex/Mountains", OveralyTextureName = "Hex/Overlays/Mountains", OverlayWeight = 2 } },
             { Biome.Swamp, new() 
                 { Identifier = Biome.Swamp, Color = Color.White, TextureName = "Hex/Swamp", OveralyTextureName = "Hex/Overlays/Swamp", OverlayWeight = 0 } },
+            { Biome.Forest, new()
+                { Identifier = Biome.Forest, Color = Color.White, TextureName = "Hex/Forest", OveralyTextureName = "Hex/Overlays/Forest", OverlayWeight = 1 } },
         };
 
         /// <summary>

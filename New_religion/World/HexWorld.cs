@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using New_religion.Interfaces;
 using New_religion.World.Biomes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
@@ -52,17 +53,6 @@ namespace New_religion.World
             RegenerateWorld();
 
             // Select and sort overlays
-
-            //var allOveralys = AllHexes.Select(x => x.overlaySprite).ToArray();
-            //var overlayHeights = allOveralys.Select(x => x.Position.Y).Distinct().OrderBy(x => x).ToArray();
-            //List<Sprite> overalys = new(allOveralys.Length);
-            //foreach (var height in overlayHeights)
-            //{
-            //    foreach (var relatedHex in allOveralys.Where(x => x.Position.Y == height))
-            //        overalys.Add(relatedHex);
-            //}
-            //HexOverlays = overalys;
-
             HexOverlays = OrderOverlays();
         }
         #region Functions
@@ -102,14 +92,33 @@ namespace New_religion.World
 
             // All biomes sorted by priorities
             var BiomePriorities = Biomes.Biomes.BiomeDict.Values.OrderBy(x => x.OverlayWeight).ToArray();
+            var heights = AllHexes.Select(x => x.position.Y).OrderBy(x => x).ToArray();
 
-            foreach (var biome in BiomePriorities)
+
+            foreach (var heigth in heights)
             {
-                foreach (var hex in AllHexes.Where(x => x.Biome == biome.Identifier).OrderBy(x => x.position.Y))
+                var HexesOnThisRow = AllHexes
+                    .Where(x => x.position.Y == heigth)
+                    .ToArray();
+
+                foreach (var priorityBiome in BiomePriorities)
                 {
-                    list.Add(hex.overlaySprite);
+                    var hexesWithBiome = HexesOnThisRow.Where(x => x.Biome == priorityBiome.Identifier);
+                    foreach (var hex in hexesWithBiome)
+                    {
+                        list.Add(hex.overlaySprite);
+                    }
                 }
             }
+
+            // ======= V 1 =======
+            //foreach (var biome in BiomePriorities)
+            //{
+            //    foreach (var hex in AllHexes.Where(x => x.Biome == biome.Identifier).OrderBy(x => x.position.Y))
+            //    {
+            //        list.Add(hex.overlaySprite);
+            //    }
+            //}
 
             return list;
         }

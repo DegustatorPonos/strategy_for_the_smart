@@ -283,8 +283,8 @@ namespace New_religion.World
             try
             {
                 var texture = CommonTextureBank.GetTexture(overlayTextureName);
-                overlaySpriteOffset.X = (texture.Width - HexScale.X) / 2;
-                overlaySpriteOffset.Y = (texture.Height - HexScale.Y) / 2;
+                overlaySpriteOffset.X = (int)((texture.Width - HexScale.X) / 2);
+                overlaySpriteOffset.Y = (int)((texture.Height - HexScale.Y) / 2);
                 overlaySprite.Position = realScenePosition - overlaySpriteOffset;
                 overlaySprite.TextureName = overlayTextureName;
             }
