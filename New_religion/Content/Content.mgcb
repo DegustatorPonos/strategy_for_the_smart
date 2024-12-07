@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:av.png;av
 
-#begin Hex/Тайтл пустой.png
+#begin cursedfont.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,19 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Hex/Тайтл пустой.png;Hex/Blank
-
-#begin Hex/Тайтл пустой.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/Тайтл пустой.png;Hex/Blank
+/build:cursedfont.png;cursedfont
 
 #begin cursor.png
 /importer:TextureImporter
@@ -61,8 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:cursor.png;Cursor
 
-#---------------------------------- Hexes ---------------------------------#
-
 #begin Hex/field_tile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -74,66 +60,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Hex/field_tile.png;Hex/Field
-
-#begin Hex/Overlays/field_ol.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/Overlays/field_ol.png;Hex/Overlays/Field
-
-#begin Hex/mountan_tile.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/mountan_tile.png;Hex/Mountains
-
-#begin Hex/Overlays/mountan_dec.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/Overlays/mountan_dec.png;Hex/Overlays/Mountains
-
-#begin Hex/swamp_tile.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/swamp_tile.png;Hex/Swamp
-
-#begin Hex/Overlays/swamp_dec.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Hex/Overlays/swamp_dec.png;Hex/Overlays/Swamp
 
 #begin Hex/forest_tile.png
 /importer:TextureImporter
@@ -147,6 +73,30 @@
 /processorParam:TextureFormat=Color
 /build:Hex/forest_tile.png;Hex/Forest
 
+#begin Hex/mountan_tile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/mountan_tile.png;Hex/Mountains
+
+#begin Hex/Overlays/field_ol.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/Overlays/field_ol.png;Hex/Overlays/Field
+
 #begin Hex/Overlays/forest_dec.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -158,3 +108,58 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Hex/Overlays/forest_dec.png;Hex/Overlays/Forest
+
+#begin Hex/Overlays/mountan_dec.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/Overlays/mountan_dec.png;Hex/Overlays/Mountains
+
+#begin Hex/Overlays/swamp_dec.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/Overlays/swamp_dec.png;Hex/Overlays/Swamp
+
+#begin Hex/swamp_tile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/swamp_tile.png;Hex/Swamp
+
+#begin Hex/Тайтл пустой.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Hex/Тайтл пустой.png;Hex/Blank
+
+#begin womp-womp-tuba-101soundboards.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:womp-womp-tuba-101soundboards.mp3;womp_womp
+

@@ -1,12 +1,10 @@
 ﻿using MG_Paketik_Extention.Components;
+using MG_Paketik_Extention.GUI;
 using MG_Paketik_Extention.IO;
+using MG_Paketik_Extention.Visuals;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using New_religion.World;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace New_religion.Scenes
 {
@@ -44,6 +42,20 @@ namespace New_religion.Scenes
                     continue;
                 AddObject(2, overaly);
             }
+
+            //============================ TEMP ============================
+            var font = new Font("av", "cursedfont", new Vector2(30, 30), "ab");
+
+            var label = new Label("ab ba", font);
+
+            AddObject(3, label);
+            KeybordController.AddAction(() => label.Position.Y += 0.5f, Keys.J, KeybordController.InputEventType.OnHold);
+            KeybordController.AddAction(() => label.Position.X += 0.5f, Keys.K, KeybordController.InputEventType.OnHold);
+            KeybordController.AddAction(() => label.changeText($"{label.Text}b"), Keys.B, KeybordController.InputEventType.OnRelease);
+
+            var sl = GameCore.CommonSoundManager.ProduceSoundLine();
+
+            KeybordController.AddAction(() => sl.Play("womp_womp"), Keys.I, KeybordController.InputEventType.OnRelease);
         }
     }
 }
